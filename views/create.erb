@@ -1,0 +1,29 @@
+<h3>Create a new contact</h3>
+<form method="post" action="/create">
+  <fieldset>
+    <dl>
+      <label>
+        <dt>Name</dt>
+        <dd><input type="text" name="name" %></dd>
+      </label>
+      <label>
+        <dt>Phone Number</dt>
+        <dd><input type="text" name="phone_number" %></dd>
+      </label>
+      <label>
+        <dt>Email Address</dt>
+        <dd><input type="text" name="email" %></dd>
+      </label>
+      <label>
+        <dt>Category</dt>
+        <dd>
+          <select name="category_id">
+            <% @categories.each do |category| %>
+              <option value="<%= category["id"] %>"><%= category["name"] %></option>
+            <% end %>
+          </select>
+      </label>
+      <a href="/">Cancel</a> <input type="submit" value="Save Changes">
+  </fieldset>
+</form>
+

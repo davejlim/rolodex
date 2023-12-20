@@ -7,6 +7,9 @@
     <link rel="stylesheet" href="/stylesheets/rolodex.css">
   </head>
   <body>
+    <a href="/"><h1>📇 Rolodex</h1></a>
+    <h4>A Contact List App</h4>
+    <%= (session.delete(:message) if session[:message]) %>
     <%== yield %>
   </body>
 </html>

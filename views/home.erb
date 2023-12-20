@@ -1,6 +1,3 @@
-<a href="/"><h1>Rolodex</h1></a>
-<h4>A Contact List App</h4>
-
 <table>
   <tr>
     <th>Name</th>
@@ -11,13 +8,17 @@
   <% @contact_table.each do |result| %>
     <tr>
       <td><%= result["name"] %></td>
-      <td><%= result["phone_number"] %></td>
+      <td><%= format_phone(result["phone_number"]) %></td>
       <td><%= result["email"] %></td>
       <td><%= result["category_name"] %></td>
       <td><a href="/edit/<%= result["id"]%>">Edit</a></td>
     </tr>
   <% end %>
 </table>
+
+<div class = "new_contact_link">
+  <a href="/create"> Create a New Contact</a>
+</div>
 
 <!-- <% @contact_table.each do |result| %>
 <%= result %>

@@ -15,6 +15,7 @@ class DatabasePersistence
     sql = <<~SQL
       SELECT contacts.*, categories.name AS category_name FROM contacts
       LEFT OUTER JOIN categories ON contacts.category_id = categories.id
+      ORDER BY contacts.id ASC
     SQL
 
     query(sql)
@@ -49,5 +50,23 @@ class DatabasePersistence
     SQL
 
     query(sql, name, phone_number, email, category_id, id)
+  end
+
+  def create_contact(name, phone_number, email, category_id)
+    sql = <<~SQL
+      INSERT INTO contacts(name, phone_number, email, category_id)
+      VALUES($1, $2, $3, $4)
+    SQL
+
+    query(sql, name, phone_number, email, category_id)
+  end
+
+  def delete_contact(id)
+    sql = <<~SQL
+      DELETE FROM contacts
+      WHERE id = $1
+    SQL
+
+    query(sql, id)
   end
 end

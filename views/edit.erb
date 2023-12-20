@@ -1,31 +1,34 @@
-<a href="/"><h1>Rolodex</h1></a>
-<h4>A Contact List App</h4>
-
 <h3>Edit</h3>
-<form action="post" path="/edit/<%= @id %>">
+
+<form action="/delete/<%= @id %>" method="post">
+  <button type="submit">Delete</button>
+</form>
+<form method="post" action="/edit/<%= @id %>">
+
   <fieldset>
     <dl>
       <label>
         <dt>Name</dt>
-        <dd><input type="text" name="name" value="<%= @contact_details["name"] %>"></dd>
+        <dd><input type="text" name="name" value="<%= @contact_details["name"] %>" required></dd>
       </label>
       <label>
         <dt>Phone Number</dt>
-        <dd><input type="text" name="phone_number" value="<%= @contact_details["phone_number"] %>"></dd>
+        <dd><input type="tel" pattern="[0-9]{10}" name="phone_number" value="<%= @contact_details["phone_number"] %>" required></dd>
       </label>
       <label>
         <dt>Email Address</dt>
-        <dd><input type="text" name="email" value="<%= @contact_details["email"] %>"></dd>
+        <dd><input type="text" name="email" value="<%= @contact_details["email"] %>" required></dd>
       </label>
       <label>
         <dt>Category</dt>
         <dd>
           <select name="category_id" value="<%= @contact_details["category_id"] %>">
             <% @categories.each do |category| %>
-              <option value="<%= category["id"]%>"><%= category["name"] %></option>
+              <option value="<%= category["id"]%>" <%= ("selected" if category["id"] == @contact_details["category_id"]) %>><%= category["name"] %></option>
             <% end %>
           </select>
       </label>
       <a href="/">Cancel</a> <input type="submit" value="Save Changes">
   </fieldset>
 </form>
+

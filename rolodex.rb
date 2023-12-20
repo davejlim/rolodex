@@ -8,6 +8,8 @@ require_relative "database_persistence"
 configure do
   also_reload "database_persistence.rb"
   set :erb, escape_html: true
+  enable :sessions
+  set :session_secret, SecureRandom.hex(32)
 end
 
 configure :development do
@@ -22,7 +24,18 @@ after do
 end
 
 helpers do
-  
+  def format_phone(phone_number)
+    if phone_number.size == 10
+      phone_digits = phone_number.to_i.digits.reverse
+      "(#{phone_digits[0..2].join('')})#{phone_digits[3..5].join('')}-#{phone_digits[6..10].join('')}"
+    end
+  end
+end
+
+def error_for_contact(phone_number)
+  if phone_number.size != 10
+    "Phone number must be 10 digits."
+  end
 end
 
 get "/" do
@@ -32,11 +45,29 @@ get "/" do
 end
 
 get "/create" do
+  @id = params[:id].to_i
+  @categories = @storage.categories
 
+  erb :create
 end
 
-post "/create/:id" do
+post "/create" do
+  name = params[:name]
+  phone_number = params[:phone_number]
+  email = params[:email]
+  category_id = params[:category_id]
+  @id = params[:id].to_i
+  @categories = @storage.categories
 
+  error = error_for_contact(phone_number)
+  if error
+    session[:message] = error
+    erb :create
+  else
+    @storage.create_contact(name, phone_number, email, category_id)
+    session[:message] = "Contact created successfully."
+    redirect '/'
+  end
 end
 
 get "/edit/:id" do
@@ -52,13 +83,26 @@ post "/edit/:id" do
   phone_number = params[:phone_number]
   email = params[:email]
   category_id = params[:category_id]
-  id = params[:id]
+  @id = params[:id]
+  @contact_details = @storage.contact_details(@id).first
+  @categories = @storage.categories
 
-  update_contact(name, phone_number, email, category_id, id)
-
-  redirect '/'
+  error = error_for_contact(phone_number)
+  if error
+    session[:message] = error
+    erb :edit
+  else
+    @storage.update_contact(name, phone_number, email, category_id, @id)
+    session[:message] = "Contact edited successfully."
+    redirect '/'
+  end
 end
 
-post "delete/:id" do
+post "/delete/:id" do
+  id = params[:id]
 
+  @storage.delete_contact(id)
+
+  session[:message] = "Contact deleted successfully."
+  redirect '/'
 end
