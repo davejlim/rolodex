@@ -1,0 +1,31 @@
+<a href="/"><h1>Rolodex</h1></a>
+<h4>A Contact List App</h4>
+
+<h3>Edit</h3>
+<form action="post" path="/edit/<%= @id %>">
+  <fieldset>
+    <dl>
+      <label>
+        <dt>Name</dt>
+        <dd><input type="text" name="name" value="<%= @contact_details["name"] %>"></dd>
+      </label>
+      <label>
+        <dt>Phone Number</dt>
+        <dd><input type="text" name="phone_number" value="<%= @contact_details["phone_number"] %>"></dd>
+      </label>
+      <label>
+        <dt>Email Address</dt>
+        <dd><input type="text" name="email" value="<%= @contact_details["email"] %>"></dd>
+      </label>
+      <label>
+        <dt>Category</dt>
+        <dd>
+          <select name="category_id" value="<%= @contact_details["category_id"] %>">
+            <% @categories.each do |category| %>
+              <option value="<%= category["id"]%>"><%= category["name"] %></option>
+            <% end %>
+          </select>
+      </label>
+      <a href="/">Cancel</a> <input type="submit" value="Save Changes">
+  </fieldset>
+</form>

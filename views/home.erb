@@ -1,0 +1,24 @@
+<a href="/"><h1>Rolodex</h1></a>
+<h4>A Contact List App</h4>
+
+<table>
+  <tr>
+    <th>Name</th>
+    <th>Phone Number</th>
+    <th>Email Address</th>
+    <th>Category</th>
+  </tr>
+  <% @contact_table.each do |result| %>
+    <tr>
+      <td><%= result["name"] %></td>
+      <td><%= result["phone_number"] %></td>
+      <td><%= result["email"] %></td>
+      <td><%= result["category_name"] %></td>
+      <td><a href="/edit/<%= result["id"]%>">Edit</a></td>
+    </tr>
+  <% end %>
+</table>
+
+<!-- <% @contact_table.each do |result| %>
+<%= result %>
+<% end %> --> 
